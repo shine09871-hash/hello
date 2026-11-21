@@ -230,59 +230,109 @@ def top_bar(theme: dict, handle: str) -> Overlay:
     return Overlay(blank())  # 상단 장식 없음
 
 
+# 스타일: magazine(A·작은 글씨 왼쪽 아래) / vlog(B·자막 없이 빠르게) / bold(C·큰 글씨 가운데)
+STYLE = "magazine"
+STYLE_DEFAULTS = {
+    "magazine": dict(image_duration=2.4, title_duration=3.0, outro_duration=3.4, crossfade=0.45),
+    "vlog": dict(image_duration=1.3, title_duration=1.6, outro_duration=3.0, crossfade=0.12),
+    "bold": dict(image_duration=2.6, title_duration=3.0, outro_duration=3.4, crossfade=0.3),
+}
+
+
+def stack_left(blocks, y, layer, x=SAFE_X):
+    d = ImageDraw.Draw(layer)
+    for b, g in blocks:
+        b.draw(d, x, y)
+        y += b.h + g
+    return y
+
+
+def _keep(blocks):
+    blocks = [(b, g) for b, g in blocks if b.lines]
+    if blocks:
+        blocks[-1] = (blocks[-1][0], 0)
+    return blocks
+
+
 def title_overlays(theme, title, subtitle) -> list[Overlay]:
-    lb = TextBlock(theme["label"], "Medium", 30, FAINT, align="center")
-    tb = TextBlock(title, "SemiBold", 78, WHITE, lead=1.3, maxw=900, align="center")
-    sb = TextBlock(subtitle, "Regular", 38, SOFT, maxw=900, align="center")
-    head = [(lb, 30), (tb, 0)]
-    total = stack_h(head) + (34 + sb.h if sb.lines else 0)
-    y = int(H * 0.47 - total / 2)
-    l1 = blank()
-    y2 = stack(head, y, l1)
-    ovs = [dim_overlay(0.28), Overlay(soft_shadow(l1), start=0.1, fade=0.7, rise=16)]
-    if sb.lines:
-        l2 = blank()
-        stack([(sb, 0)], y2 + 34, l2)
-        ovs.append(Overlay(soft_shadow(l2), start=0.4, fade=0.7, rise=12))
-    return ovs
+    if STYLE == "vlog":
+        return []
+    if STYLE == "magazine":
+        parts = _keep([(TextBlock(theme["label"], "Regular", 28, FAINT), 16),
+                       (TextBlock(title, "Medium", 52, WHITE, lead=1.3, maxw=760), 20),
+                       (TextBlock(subtitle, "Regular", 32, SOFT, maxw=760), 0)])
+        layer = blank()
+        stack_left(parts, SAFE_BOTTOM - stack_h(parts), layer)
+        return [gradient_overlay(H * 0.5, 0.6), Overlay(soft_shadow(layer), start=0.2, fade=0.9, rise=10)]
+    parts = _keep([(TextBlock(theme["label"], "Medium", 32, SOFT, align="center"), 26),
+                   (TextBlock(title, "Bold", 96, WHITE, lead=1.2, maxw=920, align="center"), 30),
+                   (TextBlock(subtitle, "Medium", 40, SOFT, maxw=900, align="center"), 0)])
+    layer = blank()
+    stack(parts, int(H * 0.47 - stack_h(parts) / 2), layer)
+    return [dim_overlay(0.35), Overlay(soft_shadow(layer), start=0.08, fade=0.5, rise=20)]
 
 
 def caption_overlays(theme, text, sub, number: str | None) -> list[Overlay]:
-    if not clean(text) and not clean(sub):
+    if STYLE == "vlog" or (not clean(text) and not clean(sub)):
         return []
-    parts = [(TextBlock(number, "Regular", 30, FAINT, align="center"), 18)] if number else []
-    parts += [(TextBlock(text, "Medium", 52, WHITE, lead=1.32, maxw=900, align="center"), 16),
-              (TextBlock(sub, "Regular", 36, SOFT, maxw=900, align="center"), 0)]
-    parts = [(b, g) for b, g in parts if b.lines]
+    if STYLE == "magazine":
+        parts = _keep(([(TextBlock(number, "Regular", 26, FAINT), 12)] if number else []) +
+                      [(TextBlock(text, "Regular", 40, WHITE, lead=1.35, maxw=760), 12),
+                       (TextBlock(sub, "Regular", 30, FAINT, maxw=760), 0)])
+        layer = blank()
+        stack_left(parts, SAFE_BOTTOM - stack_h(parts), layer)
+        return [gradient_overlay(H * 0.62, 0.5), Overlay(soft_shadow(layer), start=0.15, fade=0.8, rise=8)]
+    parts = _keep(([(TextBlock(number, "Medium", 34, SOFT, align="center"), 20)] if number else []) +
+                  [(TextBlock(text, "Bold", 78, WHITE, lead=1.22, maxw=920, align="center"), 24),
+                   (TextBlock(sub, "Medium", 40, SOFT, maxw=900, align="center"), 0)])
     layer = blank()
-    stack(parts, SAFE_BOTTOM - stack_h(parts), layer)
-    return [gradient_overlay(H * 0.55, 0.55), Overlay(soft_shadow(layer), start=0.12, fade=0.6, rise=14)]
+    stack(parts, int(H * 0.5 - stack_h(parts) / 2), layer)
+    return [dim_overlay(0.3), Overlay(soft_shadow(layer), start=0.08, fade=0.4, rise=18)]
+
+
+def _details(outro):
+    details = outro.get("details") or {}
+    if isinstance(details, list):  # [[키, 값], ...] 형식도 허용
+        details = {str(k): v for k, v in details}
+    return details
 
 
 def outro_overlays(theme, outro: dict, handle: str) -> list[Overlay]:
     name = clean(outro.get("name"))
-    details = outro.get("details") or {}
-    if isinstance(details, list):  # [[키, 값], ...] 형식도 허용
-        details = {str(k): v for k, v in details}
-    info = []
-    if name:
-        info.append((TextBlock(name, "SemiBold", 64, WHITE, lead=1.25, maxw=900, align="center"), 56))
+    details = _details(outro)
+    cta = outro.get("cta") or theme["cta"]
+    if STYLE == "magazine":
+        parts = [(TextBlock(theme["label"], "Regular", 28, FAINT), 16),
+                 (TextBlock(name, "Medium", 56, WHITE, lead=1.25, maxw=900), 40)]
+        for k, v in details.items():
+            parts += [(TextBlock(k, "Regular", 26, FAINT), 8),
+                      (TextBlock(v, "Regular", 34, SOFT, lead=1.35, maxw=900), 28)]
+        parts = _keep(parts)
+        layer = blank()
+        stack_left(parts, int(H * 0.44 - stack_h(parts) / 2), layer)
+        end = _keep([(TextBlock(cta, "Regular", 32, SOFT), 10), (TextBlock(handle, "Regular", 28, FAINT), 0)])
+        l2 = blank()
+        stack_left(end, SAFE_BOTTOM - stack_h(end), l2)
+        return [Overlay(soft_shadow(layer), start=0.15, fade=0.9, rise=10),
+                Overlay(soft_shadow(l2), start=0.6, fade=0.9, rise=8)]
+    big = STYLE == "bold"
+    info = [(TextBlock(name, "Bold" if big else "SemiBold", 76 if big else 60, WHITE, lead=1.2, maxw=920,
+                       align="center"), 50)]
     for k, v in details.items():
-        info.append((TextBlock(k, "Regular", 28, FAINT, align="center"), 10))
-        info.append((TextBlock(v, "Regular", 38, SOFT, lead=1.35, maxw=900, align="center"), 40))
-    if info:
-        info[-1] = (info[-1][0], 0)
-    ovs = [dim_overlay(0.0)]
+        info += [(TextBlock(k, "Regular", 28, FAINT, align="center"), 10),
+                 (TextBlock(v, "Medium" if big else "Regular", 40 if big else 36, SOFT, lead=1.35, maxw=900,
+                            align="center"), 36)]
+    info = _keep(info)
+    ovs = []
     if info:
         layer = blank()
         stack(info, int(H * 0.44 - stack_h(info) / 2), layer)
-        ovs.append(Overlay(soft_shadow(layer), start=0.1, fade=0.7, rise=16))
-    end = [(TextBlock(outro.get("cta") or theme["cta"], "Medium", 40, WHITE, maxw=900, align="center"), 14)]
-    if handle:
-        end.append((TextBlock(handle, "Regular", 30, FAINT, align="center"), 0))
+        ovs.append(Overlay(soft_shadow(layer), start=0.1, fade=0.6, rise=16))
+    end = _keep([(TextBlock(cta, "Medium", 40, WHITE, maxw=900, align="center"), 14),
+                 (TextBlock(handle, "Regular", 30, FAINT, align="center"), 0)])
     layer = blank()
     stack(end, SAFE_BOTTOM - stack_h(end) if info else int(H * 0.47 - stack_h(end) / 2), layer)
-    ovs.append(Overlay(soft_shadow(layer), start=0.5 if info else 0.15, fade=0.7, rise=12))
+    ovs.append(Overlay(soft_shadow(layer), start=0.5 if info else 0.15, fade=0.6, rise=12))
     return ovs
 
 
@@ -296,9 +346,9 @@ def load_image(path: Path) -> Image.Image:
     return img.convert("RGB")
 
 
-def build_scene(img: Image.Image) -> Image.Image:
+def build_scene(img: Image.Image, force_cover=False) -> Image.Image:
     """세로 사진은 꽉 채우고, 가로 사진은 검은 배경 가운데에 화면 폭으로 놓는다."""
-    if img.width / img.height <= 0.9:
+    if force_cover or img.width / img.height <= 0.9:
         return ImageOps.fit(img, (SW, SH), Image.LANCZOS, centering=(0.5, 0.45))
     bg = Image.new("RGB", (SW, SH), (0, 0, 0))
     fh = int(img.height * SW / img.width)
@@ -317,7 +367,8 @@ class ImageBase:
 
     def frame(self, k: int) -> np.ndarray:
         p = ease_in_out(k / max(1, self.n - 1))
-        z = 1.03 + 0.045 * (p if self.zoom_in else 1 - p)
+        amt = 0.08 if STYLE == "vlog" else 0.045
+        z = 1.03 + amt * (p if self.zoom_in else 1 - p)
         cw, ch = SW / z, SH / z
         cx = SW / 2 + self.pan * (p - 0.5) * SW * 0.015
         cy = SH / 2
@@ -410,17 +461,20 @@ def media_files(folder: Path) -> list[Path]:
 
 
 def load_config(folder: Path, args) -> dict:
-    cfg_path = folder / "reel.yaml"
+    cfg_path = args.config or folder / "reel.yaml"
     cfg: dict = {}
     if cfg_path.exists():
         if yaml is None:
             sys.exit("PyYAML 이 필요합니다: pip install pyyaml")
         cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-    for k in ("theme", "title", "subtitle", "handle", "music"):
+    for k in ("theme", "style", "title", "subtitle", "handle", "music"):
         v = getattr(args, k, None)
         if v is not None:
             cfg[k] = v
     cfg.setdefault("theme", "info")
+    cfg.setdefault("style", "magazine")
+    if cfg["style"] not in STYLE_DEFAULTS:
+        sys.exit(f"style 은 {', '.join(STYLE_DEFAULTS)} 중 하나여야 합니다")
     if cfg["theme"] not in THEMES:
         sys.exit(f"theme 은 {', '.join(THEMES)} 중 하나여야 합니다 (지금: {cfg['theme']})")
     if not cfg.get("clips"):
@@ -476,7 +530,7 @@ class Segment:
 
 def build_segments(folder: Path, cfg: dict):
     theme = THEMES[cfg["theme"]]
-    d = {**DEFAULTS, **{k: cfg[k] for k in DEFAULTS if k in cfg}}
+    d = {**DEFAULTS, **STYLE_DEFAULTS[STYLE], **{k: cfg[k] for k in DEFAULTS if k in cfg}}
     numbered = cfg.get("numbered", theme["numbered"])
     clips = cfg["clips"]
     segs: list[Segment] = []
@@ -504,9 +558,13 @@ def build_segments(folder: Path, cfg: dict):
         elif ext in IMG_EXT:
             img = load_image(path)
             still = img
+            if c.get("crop"):  # 한 사진의 일부를 확대해 별도 장면으로: [왼쪽, 위, 오른쪽, 아래] (0~1 비율)
+                x0, y0, x1, y1 = c["crop"]
+                img = img.crop((int(x0 * img.width), int(y0 * img.height),
+                                int(x1 * img.width), int(y1 * img.height)))
             dflt = d["title_duration"] if is_title else d["image_duration"]
             dur = float(c.get("duration", dflt))
-            base = ImageBase(build_scene(img), dur, i)
+            base = ImageBase(build_scene(img, force_cover=bool(c.get("crop"))), dur, i)
         else:
             sys.exit(f"지원하지 않는 파일 형식: {path.name}")
         if first_still is None:
@@ -642,6 +700,9 @@ def main():
     ap.add_argument("folder", type=Path, help="사진·영상이 들어 있는 폴더")
     ap.add_argument("--init", action="store_true", help="reel.yaml 틀 만들기")
     ap.add_argument("--theme", choices=list(THEMES))
+    ap.add_argument("--style", choices=["magazine", "vlog", "bold"],
+                    help="magazine: 작은 글씨 왼쪽 아래 / vlog: 자막 없이 빠르게 / bold: 큰 글씨 가운데")
+    ap.add_argument("--config", type=Path, help="설정 파일 (기본: <폴더>/reel.yaml)")
     ap.add_argument("--title")
     ap.add_argument("--subtitle")
     ap.add_argument("--handle")
@@ -661,6 +722,8 @@ def main():
         write_template(folder, args.theme or "info")
         return
     cfg = load_config(folder, args)
+    global STYLE
+    STYLE = cfg["style"]
     out = (args.out or folder / f"{folder.name}_reel.mp4").resolve()
     render(folder, cfg, out, args.crf, args.preset)
 
