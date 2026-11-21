@@ -258,9 +258,9 @@ def title_overlays(theme, title, subtitle) -> list[Overlay]:
     if STYLE == "vlog":
         return []
     if STYLE == "magazine":
-        parts = _keep([(TextBlock(theme["label"], "Regular", 28, FAINT), 16),
-                       (TextBlock(title, "Medium", 52, WHITE, lead=1.3, maxw=760), 20),
-                       (TextBlock(subtitle, "Regular", 32, SOFT, maxw=760), 0)])
+        parts = _keep([(TextBlock(theme["label"], "Regular", 34, FAINT), 18),
+                       (TextBlock(title, "SemiBold", 68, WHITE, lead=1.28, maxw=820), 22),
+                       (TextBlock(subtitle, "Regular", 40, SOFT, maxw=820), 0)])
         layer = blank()
         stack_left(parts, SAFE_BOTTOM - stack_h(parts), layer)
         return [gradient_overlay(H * 0.5, 0.6), Overlay(soft_shadow(layer), start=0.2, fade=0.9, rise=10)]
@@ -276,9 +276,9 @@ def caption_overlays(theme, text, sub, number: str | None) -> list[Overlay]:
     if STYLE == "vlog" or (not clean(text) and not clean(sub)):
         return []
     if STYLE == "magazine":
-        parts = _keep(([(TextBlock(number, "Regular", 26, FAINT), 12)] if number else []) +
-                      [(TextBlock(text, "Regular", 40, WHITE, lead=1.35, maxw=760), 12),
-                       (TextBlock(sub, "Regular", 30, FAINT, maxw=760), 0)])
+        parts = _keep(([(TextBlock(number, "Regular", 32, FAINT), 14)] if number else []) +
+                      [(TextBlock(text, "Medium", 52, WHITE, lead=1.32, maxw=820), 14),
+                       (TextBlock(sub, "Regular", 38, SOFT, maxw=820), 0)])
         layer = blank()
         stack_left(parts, SAFE_BOTTOM - stack_h(parts), layer)
         return [gradient_overlay(H * 0.62, 0.5), Overlay(soft_shadow(layer), start=0.15, fade=0.8, rise=8)]
@@ -302,15 +302,15 @@ def outro_overlays(theme, outro: dict, handle: str) -> list[Overlay]:
     details = _details(outro)
     cta = outro.get("cta") or theme["cta"]
     if STYLE == "magazine":
-        parts = [(TextBlock(theme["label"], "Regular", 28, FAINT), 16),
-                 (TextBlock(name, "Medium", 56, WHITE, lead=1.25, maxw=900), 40)]
+        parts = [(TextBlock(theme["label"], "Regular", 34, FAINT), 18),
+                 (TextBlock(name, "SemiBold", 68, WHITE, lead=1.25, maxw=900), 44)]
         for k, v in details.items():
-            parts += [(TextBlock(k, "Regular", 26, FAINT), 8),
-                      (TextBlock(v, "Regular", 34, SOFT, lead=1.35, maxw=900), 28)]
+            parts += [(TextBlock(k, "Regular", 32, FAINT), 8),
+                      (TextBlock(v, "Regular", 42, SOFT, lead=1.35, maxw=900), 30)]
         parts = _keep(parts)
         layer = blank()
         stack_left(parts, int(H * 0.44 - stack_h(parts) / 2), layer)
-        end = _keep([(TextBlock(cta, "Regular", 32, SOFT), 10), (TextBlock(handle, "Regular", 28, FAINT), 0)])
+        end = _keep([(TextBlock(cta, "Medium", 40, SOFT), 12), (TextBlock(handle, "Regular", 34, FAINT), 0)])
         l2 = blank()
         stack_left(end, SAFE_BOTTOM - stack_h(end), l2)
         return [Overlay(soft_shadow(layer), start=0.15, fade=0.9, rise=10),
