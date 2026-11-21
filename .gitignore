@@ -1,1 +1,3 @@
 reels/samples/
+__pycache__/
+*.pyc
