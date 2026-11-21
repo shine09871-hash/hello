@@ -1,7 +1,11 @@
 # 릴스 자동 제작
 
 사진·영상 폴더 하나로 인스타그램 릴스(1080×1920, 30fps, H.264)를 만듭니다.
-스타일: 장식 없이 흰 글자 + 여백(미니멀). 글꼴은 Pretendard(OFL).
+스타일(`style:` 또는 `--style`): **bold**(기본, 큰 글씨 가운데) / magazine(작은 글씨 왼쪽 아래) / vlog(자막 없이 빠르게).
+한 사진의 일부를 확대해 장면으로 쓰려면 clip 에 `crop: [왼쪽, 위, 오른쪽, 아래]` (0~1).
+글꼴은 Pretendard(OFL). ffprobe 가 없어도 되고, ffmpeg 가 없으면 `pip install imageio-ffmpeg` 로 대체된다.
+
+claude.ai 채팅용 스킬 묶음: `skills/build_insta_reels.sh` → `dist/insta-reels.zip`
 
 ## 준비
 ```bash

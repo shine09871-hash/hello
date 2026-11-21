@@ -231,7 +231,7 @@ def top_bar(theme: dict, handle: str) -> Overlay:
 
 
 # 스타일: magazine(A·작은 글씨 왼쪽 아래) / vlog(B·자막 없이 빠르게) / bold(C·큰 글씨 가운데)
-STYLE = "magazine"
+STYLE = "bold"
 STYLE_DEFAULTS = {
     "magazine": dict(image_duration=2.4, title_duration=3.0, outro_duration=3.4, crossfade=0.45),
     "vlog": dict(image_duration=1.3, title_duration=1.6, outro_duration=3.0, crossfade=0.12),
@@ -381,6 +381,8 @@ class ImageBase:
 
 
 def probe(path: Path) -> dict:
+    if not shutil.which("ffprobe"):
+        return probe_without_ffprobe(path)
     out = subprocess.run(["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", str(path)],
                          capture_output=True, text=True, check=True).stdout
     info = json.loads(out)
@@ -398,6 +400,15 @@ def probe(path: Path) -> dict:
     dur = float(info["format"].get("duration") or v.get("duration") or 0)
     has_audio = any(s.get("codec_type") == "audio" for s in info["streams"])
     return dict(w=w, h=h, duration=dur, has_audio=has_audio)
+
+
+def probe_without_ffprobe(path: Path) -> dict:
+    """ffprobe 가 없는 환경: ffmpeg 출력과 첫 장면으로 크기·길이·소리 유무를 알아낸다."""
+    err = subprocess.run([FFMPEG, "-hide_banner", "-i", str(path)], capture_output=True, text=True).stderr
+    m = re.search(r"Duration: (\d+):(\d+):([\d.]+)", err)
+    dur = int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3]) if m else 0.0
+    still = video_still(path, 0)  # 회전 정보가 적용된 실제 화면 크기
+    return dict(w=still.width, h=still.height, duration=dur, has_audio=bool(re.search(r"Stream #.*Audio:", err)))
 
 
 class VideoBase:
@@ -472,7 +483,7 @@ def load_config(folder: Path, args) -> dict:
         if v is not None:
             cfg[k] = v
     cfg.setdefault("theme", "info")
-    cfg.setdefault("style", "magazine")
+    cfg.setdefault("style", "bold")
     if cfg["style"] not in STYLE_DEFAULTS:
         sys.exit(f"style 은 {', '.join(STYLE_DEFAULTS)} 중 하나여야 합니다")
     if cfg["theme"] not in THEMES:
@@ -712,9 +723,13 @@ def main():
     ap.add_argument("--preset", default="medium", help="x264 속도 (veryfast·medium·slow)")
     args = ap.parse_args()
 
-    FFMPEG = shutil.which("ffmpeg") or sys.exit("ffmpeg 가 필요합니다")
-    if not shutil.which("ffprobe"):
-        sys.exit("ffprobe 가 필요합니다")
+    FFMPEG = shutil.which("ffmpeg")
+    if not FFMPEG:
+        try:  # pip install imageio-ffmpeg 로 받은 ffmpeg 사용
+            import imageio_ffmpeg
+            FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
+        except ImportError:
+            sys.exit("ffmpeg 가 필요합니다 (apt install ffmpeg 또는 pip install imageio-ffmpeg)")
     folder = args.folder.resolve()
     if not folder.is_dir():
         sys.exit(f"폴더가 아닙니다: {folder}")
