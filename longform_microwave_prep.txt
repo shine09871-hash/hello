@@ -1,0 +1,68 @@
+전자레인지 롱폼 — 사진·스톡 준비 목록 + [확인 필요]
+
+※ 작업 공간에서는 pixabay.com 접속이 막혀 있습니다. 스톡은 직접 받거나 Pexels로 대신하세요.
+※ 아래 라이선스 칸은 '검색어로 찾을 곳'일 뿐, 받기 전에 각 페이지에서 Public domain / No known restrictions / CC0 표기를 직접 확인하세요.
+
+[A. 실사 (파일 이름 / 챕터·컷 / 검색어 / 출처)]
+titanic_1912.jpg | 1·C09 | RMS Titanic 1912 | Wikimedia Commons (Public domain만)
+cavity_magnetron_1940.jpg | 2·C12 | Cavity magnetron 1940 | Wikimedia Commons (Public domain만)
+us_patent_2495429.png | 4·C28, C29 | US Patent 2495429 Method of Treating Foodstuffs | Google Patents 또는 USPTO (미국 정부 문서)
+grand_central_1940s.jpg | 4·C33 | Grand Central Terminal New York 1940s | 의회도서관 PPOC (No known restrictions만)
+ns_savannah_radarange.jpg | 4·C35 | Raytheon RadaRange NS Savannah | Wikimedia Commons — 주의: 파일(NS_Savannah_microwave_oven_MD8)이 개인 촬영자 저작물일 수 있음, Public domain 표기가 아니면 쓰지 말고 [대체 그림]
+tappan_rl1_1955.jpg | 5·C41 | Tappan RL-1 microwave 1955 | Smithsonian Open Access (CC0 표기된 것만)
+percy_spencer_portrait.jpg | (선택) | Percy Spencer Raytheon | Wikimedia Commons — Public domain 확인되면 C39/C43에 쓸 수 있으나, 확인 전에는 AI 그림만 사용
+
+[B. 스톡 (파일 이름 / 챕터·컷 / 검색어 / 출처)]
+old_books_night.mp4 | 1·C10 | studying old books night | Pexels
+ceremony_medal.mp4 | 2·C16 | medal ceremony vintage | Pexels (없으면 [대체 그림])
+radar_oscilloscope.mp4 | 2·C17 | vintage radar oscilloscope sweep | Pexels, Prelinger Archives(Public Domain) 가능
+melting_chocolate_closeup.mp4 | 3·C19 | melting chocolate bar close up | Pexels
+popcorn_popping_slowmo.mp4 | 3·C21 | popcorn popping slow motion | Pexels
+1940s_diner_kitchen.mp4 | 4·C34 | 1950s American diner kitchen | Prelinger Archives (Public Domain)
+two_dollar_bill_closeup.mp4 | 5·C36 | two dollar bill close up | Pexels
+modern_kitchen_microwave.mp4 | 엔딩·C44 | family heating food microwave modern home | Pexels (컬러 그대로)
+
+[C. 제미나이 안에서 뺀 것·바꾼 것 (이유)]
+- 달걀 폭발 대목의 화면 흔들림(Camera Shake)·만화 폭발 효과(Pixabay) → 롱폼 스펙(흔들림 0번, 만화식 효과 0번) 때문에 뺌. 대신 AI 그림 C24.
+- 노란색 자막 팝업·형광펜 → 글자는 [화면 글씨 디자인]에서 정한 것만. 형광 박스는 C28에서 1번만.
+- FACT CHECK 스탬프 → 도장 1번 규칙. 문구를 "확인 필요"로 바꿔 C38에서만 사용.
+- "stamp approved rejected(Pixabay)" → 접속 불가, 도장은 편집 단계에서 직접 만듦.
+- "Raytheon RadaRange NS Savannah MD1" → 위키 파일명이 MD8로 보임. 파일명·저작권 확인 필요.
+- "Amana Radarange model RR-1 1967" → HISTORY는 RR-4로 적음. 모델명 확인 전까지 검색어를 "Amana Radarange 1967"로만 사용.
+- 나머지(Library of Congress 키워드, Prelinger, Pexels 검색어, 지도 핀, 비포·애프터 3단, 키 비교 실루엣, 필름 그레인, 세피아)는 그대로 살림.
+
+[D. 제미나이 구성안에서 고친 사실]
+1) "2달러 = 일괄 격려금 규정 때문" → 단정 불가. APS·HISTORY는 "레이시온이 특허 낸 직원에게 보통 주던 2달러 보너스"라고 쓰지만 원본 서류는 확인하지 못함. 대본에서는 "그렇게 전해진다"로 처리(S37~S38).
+2) "2달러만 받고 끝" 같은 뉘앙스 → 과장. 스미스소니언 기준으로 스펜서는 1964년 선임 부사장으로 은퇴, 특허 108개. 대본 S39에 넣음.
+3) "로열티 0원" → 근거 못 찾음. 뺌.
+4) "초코바" → 자료는 대부분 'candy bar'이고 HISTORY가 인용한 UMaine 안내문은 PAYDAY(땅콩·캐러멜 바)라고 함. 대본은 "캔디바"로 통일(쇼츠 제목 쪽은 초코바로 알려진 표현이라 그대로 써도 무방).
+5) "특허 직후 곧바로 금속 상자 제작" → 1945년 10월 특허는 컨베이어로 음식을 지나가게 하는 장치 도면이고, 상자 형태 특허는 뒤(1947년 2월 출원)라고 Linda Hall이 설명. S29~S30 반영.
+6) "1차 대전 후 제대/물리학 독학" → 스미스소니언 조사로 1912년 7월 입대, 만성 귀 질환으로 2년 안 돼 의병 제대. 대본에서는 "당직 중 독학"만 쓰고 제대 이야기는 뺌.
+7) 키 1.8m는 Wikipedia 기준. 다른 자료는 5.5피트(약 1.7m)~6피트로 다름 → 대본은 "약 1.8미터". 무게 340kg(750파운드)은 여러 자료 일치.
+8) 가격 "7천만 원대" → 자료마다 $5,000(Wikipedia·APS·SMECC)과 $2,000~3,000(Smithsonian·Lemelson) 둘로 갈리고, 오늘 가치 환산도 5만~7만 달러로 다름. 원화 환산은 빼고 달러만 표기.
+9) 팝콘 → 달걀 순서와 "이튿날 주전자" → IEEE Spectrum 기준. 다른 자료는 날짜 언급 없음.
+
+[E. 빠져 있던 꿀소재 (대본에 넣은 것)]
+- 마그네트론을 깎는 대신 찍어 내는 방식으로 바꿔 하루 2,600개까지 늘린 이야기, 미·영 레이더 마그네트론의 약 80% (S14~S15, New England Historical Society 출처라 [확인 필요])
+- 같은 회사 연구원의 1984년 글: "여러 사람이 조금씩 알아간 과정" (S27, IEEE Spectrum 인용)
+- 첫 특허는 컨베이어 방식 (S29)
+- '레이더레인지' 이름은 직원 공모전, 처음엔 하루 5달러 대여, 1948년 3월 약 100대 (S34, Wikipedia 출처)
+- 아직 안 넣은 소재: "교육받은 과학자는 안 되는 걸 많이 알지만 퍼시는 안 되는 걸 모른다"(MIT 과학자, 1958 Reader's Digest) — 엔딩에 쓸 수 있음 / 1934년 벨 연구소의 마이크로파 가열 아이디어(APS)
+
+[F. 확인 필요 목록 (기억·2차 자료로만 쓴 문장)]
+S12 "1939년 MIT 의뢰, 스펜서가 책임" — Linda Hall 한 곳
+S14 "하루 2,600개" — New England Historical Society 한 곳
+S15 "미·영 레이더용의 80%, 직원 15명→5천 명" — 같은 곳 한 곳
+S16 "우수 공공봉사상" — Lemelson·NEHS·UMaine 일치하나 수여 시기는 미확인
+S19~S24 캔디바 사건의 날짜 — 자료에 따라 1945년 또는 1946년(IEEE Spectrum은 1946). 대본은 연도를 앞부분(S1)에서만 1945로 씀
+S32 가격 $5,000 vs $2,000~3,000
+S33 스피디 위니(1947년 1월) — APS·historyofmicrowave 두 곳이나 둘 다 2차 자료
+S34 하루 5달러 대여·1948년 3월 100대 — Wikipedia 한 곳
+S37~S38 2달러 — APS·HISTORY·EBSCO 일치하나 원본 서류 미확인(EBSCO는 '특허권 대가로 2달러 지급'이라 약간 다르게 씀)
+S43 사망 연도 1970 — 스미스소니언·APS 일치, Atomic Heritage는 1969로 다름
+S7·S8 나이(열두 살, 열여섯·열일곱 살) — 자료마다 12세 학교 그만둠, 16~17세 전기 일 시작으로 다름
+C35 사바나호 사진, C41 태판 사진, C39 스펜서 사진 — 저작권 확인 전까지는 [대체 그림]
+
+[G. 기록으로 남기기]
+이 환경에서는 프로젝트 문서("롱폼 제작 기준", "롱폼 블록) 1904 마라톤")를 열 수 없었습니다. 스킬 요약만 보고 짰기 때문에, 기존 시리즈의 [공통 스타일]·[캐릭터 고정 문장]·[화면 글씨 디자인]이 따로 있으면 그것으로 갈아 끼우세요.
+프로젝트에 "롱폼 블록) 전자레인지"로 저장하고, 쇼츠 프롬프트 v2의 기제작 주제 목록에 "전자레인지(롱폼)"을 추가하는 것은 아직 못 했습니다.
